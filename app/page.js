@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const projects = [
-  { id: "suzaku", image: "/imgs/72816339-F823-4FDF-B4BE-1B9A0E8BD615_0.png", active: true, height: 360 },
+  { id: "suzaku", image: "/imgs/banner.png", active: true, height: 360 },
   { id: null, image: null, active: false, height: 260 },
   { id: null, image: null, active: false, height: 320 },
   { id: null, image: null, active: false, height: 280 },
