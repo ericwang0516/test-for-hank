@@ -55,9 +55,9 @@ function ProjectCard({ project }) {
 
 export default function Home() {
   return (
-    <Container size="3" py="9">
+    <Container size="3" py="9" px={{ initial: "4", sm: "0" }}>
       <Box style={{ textAlign: "center" }} mb="9">
-        <Heading size="9" weight="bold">
+        <Heading size="9" weight="bold" className="page-title">
           Hank 作品集
         </Heading>
       </Box>

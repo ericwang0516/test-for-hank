@@ -31,6 +31,10 @@ export default function ThreeBox() {
     controls.minDistance = 1.5;
     controls.maxDistance = 10;
     controls.target.set(0, 0.5, 0);
+    controls.touches = {
+      ONE: THREE.TOUCH.ROTATE,
+      TWO: THREE.TOUCH.DOLLY_ROTATE,
+    };
     controls.update();
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
@@ -115,7 +119,8 @@ export default function ThreeBox() {
   return (
     <div
       ref={containerRef}
-      style={{ width: "100%", height: "100%", minHeight: 400, cursor: "grab" }}
+      className="three-container"
+      style={{ width: "100%", height: "100%", minHeight: 300, cursor: "grab" }}
     />
   );
 }
