@@ -12,23 +12,18 @@ export default function ThreeBox() {
     const container = containerRef.current;
     if (!container) return;
 
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
     const scene = new THREE.Scene();
     scene.background = null;
 
-    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
     camera.position.set(0, 1.5, 4);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.0;
     container.appendChild(renderer.domElement);
 
-    // OrbitControls：滑鼠拖曳旋轉、滾輪縮放
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
@@ -38,7 +33,6 @@ export default function ThreeBox() {
     controls.target.set(0, 0.5, 0);
     controls.update();
 
-    // 燈光
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
@@ -50,14 +44,31 @@ export default function ThreeBox() {
     backLight.position.set(-3, 2, -4);
     scene.add(backLight);
 
-    // 載入 GLB 模型
+    // 根據容器尺寸同步 renderer 與 camera
+    const syncSize = () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      if (w === 0 || h === 0) return;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+
+    // 使用 ResizeObserver 偵測容器實際尺寸變化（包含首次佈局）
+    const resizeObserver = new ResizeObserver(() => {
+      syncSize();
+      renderer.render(scene, camera);
+    });
+    resizeObserver.observe(container);
+
+    syncSize();
+
     const loader = new GLTFLoader();
     loader.load(
       "/3dfiles/smi.glb",
       (gltf) => {
         const model = gltf.scene;
 
-        // 自動置中與縮放模型
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
@@ -68,11 +79,13 @@ export default function ThreeBox() {
 
         scene.add(model);
 
-        // 將 OrbitControls 目標設定到模型中心
         const newBox = new THREE.Box3().setFromObject(model);
         const newCenter = newBox.getCenter(new THREE.Vector3());
         controls.target.copy(newCenter);
         controls.update();
+
+        // 模型載入後立即渲染一幀
+        renderer.render(scene, camera);
       },
       undefined,
       (error) => {
@@ -80,7 +93,6 @@ export default function ThreeBox() {
       }
     );
 
-    // 動畫迴圈
     let animationId;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
@@ -89,19 +101,9 @@ export default function ThreeBox() {
     };
     animate();
 
-    // 響應式
-    const onResize = () => {
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    };
-    window.addEventListener("resize", onResize);
-
     return () => {
       cancelAnimationFrame(animationId);
-      window.removeEventListener("resize", onResize);
+      resizeObserver.disconnect();
       controls.dispose();
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
