@@ -58,7 +58,7 @@ export default function Home() {
     <Container size="3" py="9" px={{ initial: "4", sm: "0" }}>
       <Box style={{ textAlign: "center" }} mb="9">
         <Heading size="9" weight="bold" className="page-title">
-          Hank 作品集
+          Hank作品集
         </Heading>
       </Box>
 
@@ -70,7 +70,7 @@ export default function Home() {
 
       <Box mt="9" py="4" style={{ textAlign: "center" }}>
         <Text size="1" color="gray">
-          Hank 3D project display
+          Hank作品集 @2026
         </Text>
       </Box>
     </Container>

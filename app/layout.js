@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Theme } from "@radix-ui/themes";
+import { Analytics } from "@vercel/analytics/next"
 import "@radix-ui/themes/styles.css";
 import "./globals.css";
 
@@ -14,16 +15,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "3D 作品展示",
-  description: "使用 Three.js 建立的 3D 互動展示",
+  title: "Hank作品集",
+  description: "Hank的作品集網站 | 工業設計",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="zh-TW"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
+    <html lang="zh-TW" className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <Analytics />
       <body>
         <Theme appearance="dark" accentColor="indigo" radius="medium" scaling="100%">
           {children}
@@ -31,4 +30,4 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+};

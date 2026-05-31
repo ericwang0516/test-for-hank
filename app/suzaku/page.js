@@ -7,10 +7,8 @@ export default function SuzakuPage() {
   return (
     <Container size="2" py="9" px={{ initial: "4", sm: "0" }}>
       <Box mb="6">
-        <Link href="/" style={{ textDecoration: "none" }}>
-          <Text size="2" color="gray" className="back-link" style={{ cursor: "pointer" }}>
-            ← 返回作品集
-          </Text>
+        <Link href="/" className="back-link">
+          ← 返回作品集
         </Link>
       </Box>
 
@@ -23,9 +21,6 @@ export default function SuzakuPage() {
         <Heading size="8" mb="3" weight="bold" className="suzaku-title">
           雪上摩托車 - Suzaku
         </Heading>
-        <Text size="4" color="gray" as="p" mb="6" className="suzaku-subtitle" style={{ maxWidth: 520 }}>
-          使用滑鼠拖曳旋轉模型，滾輪縮放大小，從各個角度觀察 3D 作品細節。
-        </Text>
       </Section>
 
       <Separator size="4" mb="6" />
@@ -104,7 +99,7 @@ export default function SuzakuPage() {
 
       <Box mt="9" py="4">
         <Text size="1" color="gray">
-          Hank 3D project display
+          Hank作品集 @2026
         </Text>
       </Box>
     </Container>
